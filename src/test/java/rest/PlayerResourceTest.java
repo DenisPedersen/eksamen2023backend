@@ -2,10 +2,13 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.LocationDto;
 import dtos.PlayerDto;
+import entities.Location;
 import entities.Match;
 import entities.Player;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -25,7 +28,8 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 
 public class PlayerResourceTest {
 
@@ -121,5 +125,36 @@ public class PlayerResourceTest {
         PlayerDto playerDto1 = new PlayerDto(p2);
         System.out.println(playerDtoList);
         assertThat(playerDtoList, containsInAnyOrder(playerDto, playerDto1));
+    }
+    @Test
+    public void create() {
+        Player p = new Player("Johnny","159","j@j.dk","skadet");
+        PlayerDto playerDto = new PlayerDto(p);
+        String requstBody = GSON.toJson(playerDto);
+
+        given()
+                .header("Content-type", ContentType.JSON)
+                .and()
+                .body(requstBody)
+                .when()
+                .post("/player")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("id", notNullValue())
+                .body("name", equalTo("Johnny"))
+                .body("phone", equalTo("159"))
+                .body("email", equalTo("j@j.dk"))
+                .body("status", equalTo("skadet"));
+    }
+
+    @Test
+    public void delete() {
+        given()
+                .contentType(ContentType.JSON)
+                .delete("/player/" + p1.getId())
+                .then()
+                .statusCode(200)
+                .extract().response().as(Boolean.class);
     }
 }

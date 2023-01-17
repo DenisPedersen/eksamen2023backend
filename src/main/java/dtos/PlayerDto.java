@@ -13,7 +13,7 @@ import java.util.List;
  * A DTO for the {@link entities.Player} entity
  */
 public class PlayerDto implements Serializable {
-    private final Integer id;
+    private  Integer id;
     @Size(max = 45)
     @NotNull
     private final String name;
@@ -42,6 +42,13 @@ public class PlayerDto implements Serializable {
         this.phone = player.getPhone();
         this.email = player.getEmail();
         this.status = player.getStatus();
+    }
+
+    public PlayerDto(String name, String phone, String email, String status) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.status = status;
     }
 
     public static List<PlayerDto> getDtos(List<Player> players) {

@@ -12,6 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PlayerFacadeTest {
     private static EntityManagerFactory emf;
@@ -46,6 +47,19 @@ public class PlayerFacadeTest {
         int expected = 1;
         List<PlayerDto> playerDtoList = playerFacade.getAllPlayers();
         assertEquals(expected, playerDtoList.size());
+    }
+
+    @Test
+    void deletePlayerTest() {
+        boolean response = playerFacade.deletePlayer(p1.getId());
+        assertEquals(true, response);
+    }
+    @Test
+    void createPlayerTest() {
+        PlayerDto newPlayer = new PlayerDto("Nikolaj", "888", "nikolaj@cphbusiness.dk","kampklar");
+        PlayerDto result = playerFacade.createPlayer(newPlayer);
+        assertNotNull(result);
+        assertEquals(newPlayer.getName(), result.getName());
     }
 
 }
