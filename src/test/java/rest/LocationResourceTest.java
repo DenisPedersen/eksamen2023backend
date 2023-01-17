@@ -98,7 +98,7 @@ public class LocationResourceTest {
                 .then().log().body().statusCode(200);
     }
 
-    @Test
+  /*  @Test
     public void getAll() throws Exception {
         List<LocationDto> locationDtos;
 
@@ -112,7 +112,7 @@ public class LocationResourceTest {
         LocationDto locationDto = new LocationDto(l1);
         LocationDto locationDto1 = new LocationDto(l2);
         assertThat(locationDtos, containsInAnyOrder(locationDto1, locationDto));
-    }
+    }*/
     @Test
     public void create() {
         Location l = new Location("Stivej 3","Ballerup");

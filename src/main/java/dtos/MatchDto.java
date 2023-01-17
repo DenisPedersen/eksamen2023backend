@@ -29,7 +29,7 @@ public class MatchDto implements Serializable {
     @NotNull
     private final Byte indoor;
     @NotNull
-    private  LocationInnerDto location;
+    private  Location location;
     private final List<PlayerInnerDto> players = new ArrayList<>();
 
     public MatchDto(Match match) {
@@ -66,7 +66,7 @@ public class MatchDto implements Serializable {
         return indoor;
     }
 
-    public LocationInnerDto getLocation() {
+    public Location getLocation() {
         return location;
     }
 

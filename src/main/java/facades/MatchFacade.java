@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.MatchDto;
+import entities.Location;
 import entities.Match;
 
 import javax.persistence.EntityManager;
@@ -57,5 +58,36 @@ public class MatchFacade {
         query.setParameter("id", playerId);
         query.getResultList().forEach(match -> matchDtoList.add(new MatchDto(match)));
         return matchDtoList;
+    }
+
+    public MatchDto createMatch (MatchDto matchDto) {
+        EntityManager em = emf.createEntityManager();
+        Match match = new Match(matchDto);
+        try {
+            em.getTransaction().begin();
+            em.persist(match);
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+        return new MatchDto(match);
+    }
+    public Boolean deleteMatch (int id) {
+        EntityManager em = emf.createEntityManager();
+        Match match = em.find(Match.class, id);
+
+        try {
+            em.getTransaction().begin();
+            em.remove(match);
+            em.getTransaction().commit();
+            match = em.find(Match.class, match.getId());
+        }finally {
+            em.close();
+        }
+        if(match == null) {
+            return true;
+        }
+        return false;
     }
 }

@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.PlayerDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -60,6 +62,16 @@ public class Player {
         this.phone = phone;
         this.email = email;
         this.status = status;
+    }
+
+    public Player(PlayerDto playerDto) {
+        if(playerDto.getId() != null) {
+            this.id = playerDto.getId();
+        }
+        this.name = playerDto.getName();
+        this.phone = playerDto.getPhone();
+        this.email = playerDto.getEmail();
+        this.status = playerDto.getStatus();
     }
 
     public Integer getId() {

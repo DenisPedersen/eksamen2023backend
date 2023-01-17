@@ -78,6 +78,17 @@ public class Match {
         this.location = location;
     }
 
+    public Match(MatchDto matchDto) {
+        if(matchDto.getId() != null) {
+            this.id = matchDto.getId();
+        }
+        this.opponentTeam = matchDto.getOpponentTeam();
+        this.judge = matchDto.getJudge();
+        this.type = matchDto.getType();
+        this.indoor = matchDto.getIndoor();
+        this.location = matchDto.getLocation();
+    }
+
     public Integer getId() {
         return id;
     }

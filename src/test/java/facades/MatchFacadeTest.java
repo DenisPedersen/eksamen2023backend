@@ -57,4 +57,9 @@ public class MatchFacadeTest {
         List<MatchDto> matchDtoList = matchFacade.getAllMatches();
         assertEquals(expected, matchDtoList.size());
     }
+    @Test
+    void deleteMatchTest() {
+        boolean response = matchFacade.deleteMatch(m1.getId());
+        assertEquals(true, response);
+    }
 }
