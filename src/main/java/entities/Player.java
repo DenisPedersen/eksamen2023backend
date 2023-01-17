@@ -3,10 +3,13 @@ package entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
+@NamedQuery(name="Player.deleteAllRows", query = "DELETE from Player")
 @Table(name = "player")
 public class Player {
     @Id
@@ -38,7 +41,19 @@ public class Player {
     @JoinTable(name = "match_has_player",
             joinColumns = @JoinColumn(name = "player_id"),
             inverseJoinColumns = @JoinColumn(name = "match_id"))
-    private Set<Match> matches = new LinkedHashSet<>();
+    private List<Match> matches = new ArrayList<>();
+
+    public Player(Integer id, String name, String phone, String email, String status) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.status = status;
+    }
+
+    public Player() {
+
+    }
 
     public Integer getId() {
         return id;
@@ -80,11 +95,11 @@ public class Player {
         this.status = status;
     }
 
-    public Set<Match> getMatches() {
+    public List<Match> getMatches() {
         return matches;
     }
 
-    public void setMatches(Set<Match> matches) {
+    public void setMatches(List<Match> matches) {
         this.matches = matches;
     }
 

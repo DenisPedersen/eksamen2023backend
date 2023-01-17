@@ -1,12 +1,17 @@
 package entities;
 
+import dtos.MatchDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
+@NamedQuery(name="Match.deleteAllRows", query = "DELETE from Match")
 @Table(name = "`match`")
 public class Match {
     @Id
@@ -43,6 +48,35 @@ public class Match {
             joinColumns = @JoinColumn(name = "match_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id"))
     private Set<Player> players = new LinkedHashSet<>();
+
+    public Match(Integer id, String opponentTeam, String judge, String type, Byte indoor, Location location, Set<Player> players) {
+        this.id = id;
+        this.opponentTeam = opponentTeam;
+        this.judge = judge;
+        this.type = type;
+        this.indoor = indoor;
+        this.location = location;
+        this.players = players;
+    }
+
+    public Match() {
+
+    }
+
+    public Match(String opponentTeam, String judge, String type, Byte indoor) {
+        this.opponentTeam = opponentTeam;
+        this.judge = judge;
+        this.type = type;
+        this.indoor = indoor;
+    }
+
+    public Match(String opponentTeam, String judge, String type, Byte indoor, Location location) {
+        this.opponentTeam = opponentTeam;
+        this.judge = judge;
+        this.type = type;
+        this.indoor = indoor;
+        this.location = location;
+    }
 
     public Integer getId() {
         return id;
