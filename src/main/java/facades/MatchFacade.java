@@ -103,7 +103,7 @@ public class MatchFacade {
         try {
             em.getTransaction().begin();
             em.merge(match);
-            em.getTransaction().begin();
+            em.getTransaction().commit();
         }
         finally {
             em.close();

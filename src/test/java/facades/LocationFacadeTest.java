@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.LocationDto;
+import dtos.MatchDto;
 import entities.Location;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,5 +66,14 @@ public class LocationFacadeTest {
         int expected = 2;
         List<LocationDto> locationDtos = locationFacade.getAllLocations();
         assertEquals(expected, locationDtos.size());
+    }
+
+    @Test
+    void updateLocationTest() {
+        LocationDto newLocation = new LocationDto("Motorvejen 3", "Hillerød");
+        newLocation.setId(l1.getId());
+        locationFacade.updateLocation(newLocation);
+        LocationDto result = locationFacade.getLocationById(l1.getId());
+        assertEquals(newLocation.getAddress(), result.getAddress());
     }
 }

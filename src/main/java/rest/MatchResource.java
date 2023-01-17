@@ -61,7 +61,10 @@ public class MatchResource {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateMatch(@PathParam("id") int id) {
-        return Response.ok().entity(GSON.toJson(facade.getMatchById(id))).build();
+    public Response updateMatch(@PathParam("id") int id, String content) {
+        MatchDto matchDto = GSON.fromJson(content, MatchDto.class);
+        matchDto.setId(id);
+        MatchDto updated = facade.updateMatch(matchDto);
+        return Response.ok().entity(GSON.toJson(updated)).build();
     }
 }

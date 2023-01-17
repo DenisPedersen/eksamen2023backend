@@ -89,6 +89,14 @@ public class Match {
         this.location = matchDto.getLocation();
     }
 
+    public Match(String opponentTeam, String judge, String type, byte indoor, int locationId) {
+        this.opponentTeam = opponentTeam;
+        this.judge = judge;
+        this.type = type;
+        this.indoor = indoor;
+        this.location = getLocation();
+    }
+
     public Integer getId() {
         return id;
     }

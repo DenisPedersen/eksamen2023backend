@@ -42,4 +42,14 @@ public class LocationResource {
     public Response getAll() {
         return Response.ok().entity(GSON.toJson(FACADE.getAllLocations())).build();
     }
+    @PUT
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateLocation(@PathParam("id") int id, String content) {
+        LocationDto locationDto = GSON.fromJson(content, LocationDto.class);
+        locationDto.setId(id);
+        LocationDto updated = FACADE.updateLocation(locationDto);
+        return Response.ok().entity(GSON.toJson((updated))).build();
+    }
 }

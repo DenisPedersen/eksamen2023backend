@@ -60,4 +60,24 @@ public class LocationFacade {
         List<Location> locations = query.getResultList();
         return LocationDto.getDtos(locations);
     }
+
+    public LocationDto updateLocation (LocationDto locationDto) {
+        EntityManager em = emf.createEntityManager();
+        Location location = new Location(locationDto);
+        try {
+            em.getTransaction().begin();
+            em.merge(location);
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+        return new LocationDto(location);
+    }
+
+    public LocationDto getLocationById(int id) {
+        EntityManager em = emf.createEntityManager();
+        Location l = em.find(Location.class, id);
+        return new LocationDto(l);
+    }
 }

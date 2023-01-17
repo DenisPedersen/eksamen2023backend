@@ -79,6 +79,10 @@ public class LocationDto implements Serializable {
                 "matches = " + matches + ")";
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     /**
      * A DTO for the {@link entities.Match} entity
      */

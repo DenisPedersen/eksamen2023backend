@@ -142,4 +142,22 @@ public class LocationResourceTest {
                 .statusCode(200)
                 .extract().response().as(Boolean.class);
     }
+
+    @Test
+    public void updateLocationTest() {
+        l1.setAddress("Nyvej");
+        LocationDto locationDto = new LocationDto(l1);
+        String requestBody = GSON.toJson(locationDto);
+        given()
+                .header("Content-type", ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .put("/location/" + l1.getId())
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("id", equalTo(l1.getId()))
+                .body("address", equalTo(l1.getAddress()))
+                .body("city", equalTo(l1.getCity()));
+    }
 }

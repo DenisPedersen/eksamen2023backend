@@ -39,12 +39,10 @@ public class MatchFacadeTest {
     @BeforeEach
     public void setup() {
         EntityManager em = emf.createEntityManager();
-        l1 = new Location(1,"Byvej 2", "Brønderslev");
-        m1 = new Match( "Holdet","Mads","slutspil", (byte) 0,  l1);
+        m1 = new Match( "Holdet","Mads","slutspil", (byte) 0, 1);
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Match.deleteAllRows").executeUpdate();
-            em.persist(l1);
             em.persist(m1);
             em.getTransaction().commit();
         }finally {
@@ -64,10 +62,9 @@ public class MatchFacadeTest {
     }
     @Test
     void updateMatchTest() {
-        MatchDto newMatch = new MatchDto("Nyhold", "Kristian", "slutspil", (byte) 0);
-        newMatch.setId(m1.getId());
-        matchFacade.updateMatch(newMatch);
-        MatchDto result = matchFacade.getMatchById(m1.getId());
-        assertEquals(newMatch.getJudge(), result.getJudge());
+        m1.setJudge("Ny dommer");
+        MatchDto expected = new MatchDto(m1);
+        MatchDto actual = matchFacade.updateMatch(expected);
+        assertEquals(expected, actual);
     }
 }
