@@ -20,7 +20,7 @@
 
         <!-- TODO: Add your own database name -->
         <!-- IMPORTANT-1: The database should exist on your droplet -->
-        <db.name>semester3</db.name>
+        <db.name>sportsmatch</db.name>
     </properties>
     
     <dependencies>
