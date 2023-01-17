@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.LocationDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -38,6 +40,19 @@ public class Location {
 
     public Location() {
 
+    }
+
+    public Location(String address, String city) {
+        this.address = address;
+        this.city = city;
+    }
+
+    public Location(LocationDto locationDto) {
+        if(locationDto.getId() != null) {
+            this.id = locationDto.getId();
+        }
+        this.address = locationDto.getAddress();
+        this.city = locationDto.getCity();
     }
 
     public Integer getId() {

@@ -2,10 +2,10 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.PlayerDto;
-import entities.Match;
-import entities.Player;
+import dtos.LocationDto;
+import entities.Location;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -20,23 +20,21 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.*;
 
-public class PlayerResourceTest {
+public class LocationResourceTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
 
-    Player p1, p2;
-    Match m1, m2;
+    Location l1, l2;
+
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
 
@@ -65,19 +63,13 @@ public class PlayerResourceTest {
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
-       /* m1 = new Match("Johns hold", "Arne","slutspil", (byte) 0, 1);
-        List<Match> matches = new ArrayList<>();
-        matches.add(m1);*/
-        p1 = new Player("Kristoffer", "123323", "b@b.dk", "skadet");
-        //p1.setMatches(matches);
-        p2 = new Player("Bjarne", "555", "c@b.dk", "kampklar");
-
+        l1 = new Location("Bygaden 44", "Næstved");
+        l2 = new Location("Vejgade 1", "Byen");
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Player.deleteAllRows").executeUpdate();
-            //em.persist(m1);
-            em.persist(p1);
-            em.persist(p2);
+            em.createNamedQuery("Location.deleteAllRows").executeUpdate();
+            em.persist(l1);
+            em.persist(l2);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -86,15 +78,15 @@ public class PlayerResourceTest {
 
     @Test
     public void testServerIsUp() {
-        System.out.println("Testing server");
-        given().when().get("/player").then().statusCode(200);
+        System.out.println("Testing serverstatus");
+        given().when().get("/location").then().statusCode(200);
     }
 
     @Test
     public void testLogRequest() {
         System.out.println("Testing logging request details");
         given().log().all()
-                .when().get("/player")
+                .when().get("/location")
                 .then().statusCode(200);
     }
 
@@ -102,24 +94,52 @@ public class PlayerResourceTest {
     public void testLogResponse() {
         System.out.println("Testing logging response details");
         given()
-                .when().get("/player")
+                .when().get("/location")
                 .then().log().body().statusCode(200);
     }
 
     @Test
-    public void getAllPlayers() {
-        List<PlayerDto> playerDtoList;
+    public void getAll() throws Exception {
+        List<LocationDto> locationDtos;
 
-        playerDtoList = given()
+        locationDtos = given()
                 .contentType("application/json")
                 .when()
-                .get("/player")
+                .get("/location")
                 .then()
-                .extract().body().jsonPath().getList("", PlayerDto.class);
+                .extract().body().jsonPath().getList("", LocationDto.class);
 
-        PlayerDto playerDto = new PlayerDto(p1);
-        PlayerDto playerDto1 = new PlayerDto(p2);
-        System.out.println(playerDtoList);
-        assertThat(playerDtoList, containsInAnyOrder(playerDto, playerDto1));
+        LocationDto locationDto = new LocationDto(l1);
+        LocationDto locationDto1 = new LocationDto(l2);
+        assertThat(locationDtos, containsInAnyOrder(locationDto1, locationDto));
+    }
+    @Test
+    public void create() {
+        Location l = new Location("Stivej 3","Ballerup");
+        LocationDto locationDto = new LocationDto(l);
+        String requstBody = GSON.toJson(locationDto);
+
+        given()
+                .header("Content-type", ContentType.JSON)
+                .and()
+                .body(requstBody)
+                .when()
+                .post("/location")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("id", notNullValue())
+                .body("address", equalTo("Stivej 3"))
+                .body("city", equalTo("Ballerup"));
+    }
+
+    @Test
+    public void delete() {
+        given()
+                .contentType(ContentType.JSON)
+                .delete("/location/" + l1.getId())
+                .then()
+                .statusCode(200)
+                .extract().response().as(Boolean.class);
     }
 }

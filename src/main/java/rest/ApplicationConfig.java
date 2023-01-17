@@ -33,6 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(security.errorhandling.NotAuthorizedExceptionMapper.class);
         resources.add(rest.MatchResource.class);
         resources.add(rest.PlayerResource.class);
+        resources.add(rest.LocationResource.class);
     }
     
 }
