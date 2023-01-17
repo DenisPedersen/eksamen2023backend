@@ -49,4 +49,13 @@ public class MatchFacade {
         query.getResultList().forEach(match -> matchDtoList.add(new MatchDto(match)));
         return matchDtoList;
     }
+
+    public List<MatchDto> getAllPlayersInMatch(Integer playerId) {
+        List<MatchDto> matchDtoList = new ArrayList<>();
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<Match> query = em.createQuery("SELECT m FROM Match m JOIN m.players p WHERE p.id= :id", Match.class);
+        query.setParameter("id", playerId);
+        query.getResultList().forEach(match -> matchDtoList.add(new MatchDto(match)));
+        return matchDtoList;
+    }
 }

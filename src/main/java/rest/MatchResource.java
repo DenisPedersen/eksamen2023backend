@@ -19,12 +19,10 @@ public class MatchResource {
     private static final MatchFacade facade = MatchFacade.getInstance(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    @Path("all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllMatches() {
-        List<MatchDto> matchDtoList = facade.getAllMatches();
-        return GSON.toJson(matchDtoList);
+    public Response getAllMatches() {
+        return Response.ok().entity(GSON.toJson(facade.getAllMatches())).build();
     }
 
     @GET
@@ -32,5 +30,12 @@ public class MatchResource {
     @Produces({MediaType.APPLICATION_JSON})
     public Response getLocationsForMatch(@PathParam("id") Integer id) {
         return Response.ok().entity(GSON.toJson(facade.getAllMatchesFromLocation(id))).build();
+    }
+
+    @GET
+    @Path("player/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getPlayersInMatch(@PathParam("id") Integer id) {
+        return Response.ok().entity(GSON.toJson(facade.getAllPlayersInMatch(id))).build();
     }
 }
