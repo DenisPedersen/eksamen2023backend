@@ -90,4 +90,24 @@ public class MatchFacade {
         }
         return false;
     }
+
+    public MatchDto getMatchById(int id) {
+        EntityManager em = emf.createEntityManager();
+        Match m = em.find(Match.class, id);
+        return  new MatchDto(m);
+    }
+
+    public MatchDto updateMatch (MatchDto matchDto) {
+        EntityManager em = emf.createEntityManager();
+        Match match = new Match(matchDto);
+        try {
+            em.getTransaction().begin();
+            em.merge(match);
+            em.getTransaction().begin();
+        }
+        finally {
+            em.close();
+        }
+        return new MatchDto(match);
+    }
 }

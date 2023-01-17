@@ -16,7 +16,7 @@ import java.util.Set;
  * A DTO for the {@link entities.Match} entity
  */
 public class MatchDto implements Serializable {
-    private final Integer id;
+    private Integer id;
     @Size(max = 45)
     @NotNull
     private final String opponentTeam;
@@ -39,6 +39,17 @@ public class MatchDto implements Serializable {
         this.type = match.getType();
         this.indoor = match.getIndoor();
         match.getPlayers().forEach(player -> players.add(new MatchDto.PlayerInnerDto(player)));
+    }
+
+    public MatchDto(String opponentTeam, String judge, String type, Byte indoor) {
+        this.opponentTeam = opponentTeam;
+        this.judge = judge;
+        this.type = type;
+        this.indoor = indoor;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public static List<MatchDto> getDtos (List<Match> matches) {
@@ -127,6 +138,7 @@ public class MatchDto implements Serializable {
             this.address = location.getAddress();
             this.city = location.getCity();
         }
+
 
         public Integer getId() {
             return id;

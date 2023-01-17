@@ -56,4 +56,12 @@ public class MatchResource {
     public Response deleteMatch(@PathParam("id") int id) {
         return Response.ok().entity(GSON.toJson(facade.deleteMatch(id))).build();
     }
+
+    @PUT
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateMatch(@PathParam("id") int id) {
+        return Response.ok().entity(GSON.toJson(facade.getMatchById(id))).build();
+    }
 }

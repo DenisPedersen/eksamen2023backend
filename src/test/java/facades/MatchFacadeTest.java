@@ -62,4 +62,12 @@ public class MatchFacadeTest {
         boolean response = matchFacade.deleteMatch(m1.getId());
         assertEquals(true, response);
     }
+    @Test
+    void updateMatchTest() {
+        MatchDto newMatch = new MatchDto("Nyhold", "Kristian", "slutspil", (byte) 0);
+        newMatch.setId(m1.getId());
+        matchFacade.updateMatch(newMatch);
+        MatchDto result = matchFacade.getMatchById(m1.getId());
+        assertEquals(newMatch.getJudge(), result.getJudge());
+    }
 }
