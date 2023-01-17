@@ -45,7 +45,7 @@ public class MatchFacadeTest {
             em.getTransaction().begin();
             em.createNamedQuery("Match.deleteAllRows").executeUpdate();
             em.persist(l1);
-           // em.persist(m1);
+            em.persist(m1);
             em.getTransaction().commit();
         }finally {
             em.close();

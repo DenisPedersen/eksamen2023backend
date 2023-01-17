@@ -55,6 +55,13 @@ public class Player {
 
     }
 
+    public Player(String name, String phone, String email, String status) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.status = status;
+    }
+
     public Integer getId() {
         return id;
     }
