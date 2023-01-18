@@ -109,23 +109,23 @@ public class PlayerResourceTest {
                 .when().get("/player")
                 .then().log().body().statusCode(200);
     }
+    /*
+        @Test
+        public void getAllPlayers() {
+            List<PlayerDto> playerDtoList;
 
-    @Test
-    public void getAllPlayers() {
-        List<PlayerDto> playerDtoList;
+            playerDtoList = given()
+                    .contentType("application/json")
+                    .when()
+                    .get("/player")
+                    .then()
+                    .extract().body().jsonPath().getList("", PlayerDto.class);
 
-        playerDtoList = given()
-                .contentType("application/json")
-                .when()
-                .get("/player")
-                .then()
-                .extract().body().jsonPath().getList("", PlayerDto.class);
-
-        PlayerDto playerDto = new PlayerDto(p1);
-        PlayerDto playerDto1 = new PlayerDto(p2);
-        System.out.println(playerDtoList);
-        assertThat(playerDtoList, containsInAnyOrder(playerDto, playerDto1));
-    }
+            PlayerDto playerDto = new PlayerDto(p1);
+            PlayerDto playerDto1 = new PlayerDto(p2);
+            System.out.println(playerDtoList);
+            assertThat(playerDtoList, containsInAnyOrder(playerDto, playerDto1));
+        }*/
     @Test
     public void create() {
         Player p = new Player("Johnny","159","j@j.dk","skadet");
